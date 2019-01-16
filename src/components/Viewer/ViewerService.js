@@ -1,16 +1,41 @@
 import * as Three from "three";
 
-export const createCube = ({x, y, z} = {x: 1, y: 1, z: 1}) => {
+const OBJLoader = require("three-obj-loader");
+OBJLoader(Three);
+
+export const createCube = ({x, y, z} = {x: 60, y: 60, z: 60}) => {
   const geometry = new Three.BoxBufferGeometry(x, y, z);
-  const material = new Three.MeshBasicMaterial();
+  const material = new Three.MeshBasicMaterial({vertexColors: Three.VertexColors});
 
   return new Three.Mesh(geometry, material);
+};
+
+export const drawLine = () => {
+  const geometry = new Three.Geometry();
+  geometry.vertices.push(new Three.Vector3(0, 0, 0));
+  geometry.vertices.push(new Three.Vector3(200, 200, 0));
+
+  const material = new Three.LineBasicMaterial({color: 0x0000ff, linewidth: 5});
+  return new Three.Line(geometry, material);
 };
 
 export const createWall = () => {
   const geometry = new Three.PlaneBufferGeometry(1, 1, 0, 0);
   const material = new Three.MeshBasicMaterial({color: 0xffffff, wireframe: true});
   return new Three.Mesh(geometry, material);
+};
+
+export const setUpLights = () => {
+  const lights = new Three.Group();
+
+  const ambientLight = new Three.AmbientLight(0x555555);
+  lights.add(ambientLight);
+
+  const directionalLight = new Three.DirectionalLight(0xffffff);
+  directionalLight.position.set(1, 1, 1).normalize();
+  lights.add(directionalLight);
+
+  return lights;
 };
 
 export const move = (obj) => {
@@ -35,7 +60,6 @@ export const move = (obj) => {
     }
   }
 };
-
 
 export const buildRoom = (width = 1000, height = 500, depth = 800) => {
   const group = new Three.Group();
@@ -77,4 +101,25 @@ export const buildRoom = (width = 1000, height = 500, depth = 800) => {
   group.add(backWall);
 
   return group;
+};
+
+
+export const loadOBJ = async () => {
+  var loader = new Three.OBJLoader();
+
+  return await new Promise((resolve, reject) => {
+    loader.load(
+      "/tshirts.obj",
+      resolve,
+      // called when loading is in progresses
+      function (xhr) {
+        console.log((xhr.loaded / xhr.total * 100) + "% loaded");
+      },
+      // called when loading has errors
+      function (error) {
+        console.log("An error happened");
+        reject(error);
+      }
+    );
+  });
 };

@@ -1,11 +1,11 @@
 <template>
   <div class="home">
 
-    <!--<viewer />-->
+    <viewer />
 
-    <products-list />
+    <!--<products-list />-->
 
-    <subscription-form />
+    <!--<subscription-form />-->
 
   </div>
 </template>

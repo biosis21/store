@@ -10,6 +10,7 @@
   "dependencies": {
     "element-ui": "^2.4.11",
     "three": "^0.100.0",
+    "three-obj-loader": "^1.1.3",
     "three-orbit-controls": "^82.1.0",
     "vue": "^2.5.21",
     "vue-class-component": "^6.0.0",
